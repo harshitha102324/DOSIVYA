@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DOSIVYA – Never Miss Your Medicine.</title>
+<meta name="theme-color" content="#4f7cff">
+<meta name="description" content="DOSIVYA: Never Miss Your Medicine. Medicine reminders, dose history and refill alerts.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="DOSIVYA">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/svg+xml" href="icons/icon.svg">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+:root{--bg:#f5f7ff;--card:#fff;--tx:#18204a;--mu:#68739a;--ln:#e4e9f7;--b:#4f7cff;--p:#7c5cff;--ok:#12803c;--okb:#e0f5e8;--wr:#a85d00;--wrb:#fff0d9;--er:#c62828;--erb:#fde4e4;--upb:#e6edff;--sh:0 8px 28px rgba(60,80,170,.09);color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1230;--card:#171c40;--tx:#eef1ff;--mu:#9aa5d1;--ln:#2a3162;--ok:#5bd68a;--okb:#14382a;--wr:#ffbe5c;--wrb:#3e2f12;--er:#ff8a8a;--erb:#401a24;--upb:#202a5c;--sh:0 8px 28px rgba(0,0,0,.35);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1230;--card:#171c40;--tx:#eef1ff;--mu:#9aa5d1;--ln:#2a3162;--ok:#5bd68a;--okb:#14382a;--wr:#ffbe5c;--wrb:#3e2f12;--er:#ff8a8a;--erb:#401a24;--upb:#202a5c;--sh:0 8px 28px rgba(0,0,0,.35);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--tx);font:15px/1.5 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1,h2,h3,p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+input,select,textarea{font:inherit;color:var(--tx);background:var(--card);border:1.5px solid var(--ln);border-radius:12px;padding:10px 12px;width:100%;min-width:0}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--b);outline-offset:1px}
+.shell{display:flex;min-height:100vh}
+aside{width:250px;flex:none;background:var(--card);border-right:1px solid var(--ln);padding:22px 16px;position:sticky;top:0;height:100vh;display:none;flex-direction:column;gap:6px}
+.nv{display:flex;align-items:center;gap:12px;padding:12px 14px;border:0;border-radius:12px;background:none;text-align:left;width:100%;color:var(--mu);font-weight:600}
+.nv:hover{background:var(--upb)}
+.nv.on{background:linear-gradient(135deg,var(--b),var(--p));color:#fff}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.wm{font-weight:800;font-size:20px;letter-spacing:.06em;background:linear-gradient(90deg,var(--b),var(--p));-webkit-background-clip:text;background-clip:text;color:transparent}
+.mn{flex:1;min-width:0;display:flex;flex-direction:column}
+.tb{display:flex;align-items:center;gap:12px;padding:14px 20px;position:sticky;top:0;z-index:5;background:var(--bg)}
+.tb .ml{display:block}
+.tb .dt{flex:1;color:var(--mu);font-weight:600;font-size:14px}
+.ib{width:42px;height:42px;border-radius:50%;border:1px solid var(--ln);background:var(--card);display:grid;place-items:center;position:relative;padding:0;flex:none}
+.dot{position:absolute;top:8px;right:9px;width:9px;height:9px;border-radius:50%;background:var(--er);border:2px solid var(--card)}
+.av{width:42px;height:42px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,var(--b),var(--p));color:#fff;display:grid;place-items:center;font-weight:700;border:0;padding:0}
+.av img{width:100%;height:100%;object-fit:cover}
+main{padding:6px 20px 110px;max-width:1080px;width:100%;margin:0 auto}
+.bn{position:fixed;left:0;right:0;bottom:0;display:flex;background:var(--card);border-top:1px solid var(--ln);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));z-index:6}
+.bn button{flex:1;border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:600;color:var(--mu);padding:6px 0}
+.bn button.on{color:var(--p)}
+@media(min-width:900px){aside{display:flex}.bn,.tb .ml{display:none}main{padding-bottom:40px}}
+h1{font-size:28px;font-weight:800;letter-spacing:-.01em}
+h2{font-size:22px;font-weight:800;margin-bottom:14px}
+h3{font-size:16px;font-weight:700}
+small,.mu{color:var(--mu);font-size:13px}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:20px;padding:18px;box-shadow:var(--sh)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:18px 0}
+.st{display:flex;flex-direction:column;gap:2px;padding:16px}
+.st b{font-size:28px;font-weight:800;line-height:1.1;margin-top:8px}
+.si{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--upb);color:var(--b);flex:none}
+.si.p{background:#efe9ff;color:var(--p)}.si.ok{background:var(--okb);color:var(--ok)}.si.wr{background:var(--wrb);color:var(--wr)}.si.er{background:var(--erb);color:var(--er)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .si.p{background:#2c2566}}
+.nx{background:linear-gradient(135deg,#4f7cff,#7c5cff);color:#fff;border:0;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-bottom:22px}
+.nx h2{color:#fff;margin:2px 0 4px}.nx small{color:#e3e8ff}
+.cd{font-size:22px;font-weight:800;background:rgba(255,255,255,.18);padding:10px 16px;border-radius:14px}
+.row{display:flex;gap:12px;align-items:center;padding:14px 0;border-top:1px solid var(--ln);flex-wrap:wrap}
+.row:first-child{border-top:0}
+.row .g{flex:1;min-width:170px}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;font-size:12px;font-weight:700}
+.pill.taken{background:var(--okb);color:var(--ok)}.pill.skipped{background:var(--wrb);color:var(--wr)}.pill.missed{background:var(--erb);color:var(--er)}.pill.due{background:var(--wrb);color:var(--wr)}.pill.up{background:var(--upb);color:var(--b)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:12px;padding:10px 16px;font-weight:700;background:linear-gradient(135deg,var(--b),var(--p));color:#fff}
+.btn.sec{background:var(--upb);color:var(--b)}.btn.ok{background:#15803d;color:#fff}.btn.wr{background:#f59e0b;color:#1f1400}.btn.er{background:#d32f2f;color:#fff}.btn.sm{padding:7px 12px;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.mh{display:flex;gap:12px;align-items:center;margin-bottom:10px}
+dl{display:grid;grid-template-columns:auto 1fr;gap:5px 14px;margin:0 0 12px;font-size:14px}
+dt{color:var(--mu)}dd{margin:0;font-weight:600;text-align:right}
+.ac{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chip{padding:2px 9px;border-radius:99px;font-size:12px;font-weight:700;background:var(--okb);color:var(--ok)}.chip.low{background:var(--erb);color:var(--er)}
+.sq{display:flex;gap:6px;margin-top:8px}.sq input{width:90px;padding:7px 10px}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+label.f{display:flex;flex-direction:column;gap:5px;font-weight:600;font-size:14px}
+.tr{display:flex;gap:8px;margin-bottom:8px;align-items:center}
+.err{display:none;background:var(--erb);color:var(--er);border-radius:12px;padding:10px 14px 10px 30px;margin-bottom:14px;font-weight:600}
+.empty{text-align:center;padding:34px 16px;color:var(--mu)}.empty .si{margin:0 auto 12px;width:56px;height:56px;border-radius:18px}.empty h3{color:var(--tx);margin-bottom:4px}
+.ban{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--upb);border-radius:16px;padding:14px 16px;margin-top:16px}
+.ban p{flex:1;min-width:200px;font-size:14px}
+.warn{background:var(--wrb);color:var(--wr)}
+.ft{margin-top:26px;font-size:12.5px;color:var(--mu);text-align:center;line-height:1.5}
+.sec h3{margin-bottom:10px}.sec{margin-bottom:16px}
+.sr{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:11px 0;border-top:1px solid var(--ln)}.sr:first-of-type{border-top:0}
+.sw{position:relative;width:46px;height:26px;flex:none}.sw input{opacity:0;position:absolute;inset:0;width:100%;height:100%;margin:0;cursor:pointer;z-index:1}
+.sw i{position:absolute;inset:0;border-radius:99px;background:var(--ln);transition:.2s}.sw i:after{content:"";position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s}
+.sw input:checked+i{background:var(--p)}.sw input:checked+i:after{left:23px}
+.nm{width:90px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:620px}th,td{text-align:left;padding:11px 10px;border-top:1px solid var(--ln);font-size:14px}th{color:var(--mu);font-weight:600;border-top:0}
+.flt{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:14px}
+.ov{position:fixed;inset:0;background:rgba(10,14,40,.62);display:grid;place-items:center;z-index:50;padding:16px}
+.md{background:var(--card);border-radius:24px;padding:24px;max-width:400px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.pp{text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center}
+.pp .bi{width:64px;height:64px;border-radius:20px;background:linear-gradient(135deg,var(--b),var(--p));color:#fff;display:grid;place-items:center}
+.pp .big{font-size:18px;font-weight:700;color:var(--p)}.pb{display:flex;flex-direction:column;gap:8px;width:100%;margin:8px 0}.pb .btn{padding:13px}
+#toast{position:fixed;left:50%;bottom:calc(90px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#1c2455;color:#fff;padding:11px 18px;border-radius:14px;font-weight:600;z-index:80;display:none;max-width:90%;text-align:center}
+.wel{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px 20px;background:radial-gradient(circle at 15% 10%,#dbe6ff,transparent 45%),radial-gradient(circle at 90% 90%,#e6dcff,transparent 45%),var(--bg);gap:16px}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .wel{background:radial-gradient(circle at 15% 10%,#1d2a6b,transparent 45%),radial-gradient(circle at 90% 90%,#33227a,transparent 45%),var(--bg)}}
+.wel h1{font-size:clamp(34px,8vw,54px);letter-spacing:.08em}
+.wel .tag{font-size:19px;font-weight:600;color:var(--p)}
+.wel p.d{max-width:520px;color:var(--mu)}
+.wel .btn{padding:15px 34px;font-size:17px;border-radius:16px;margin:6px 0}
+.fts{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}.fts span{background:var(--card);border:1px solid var(--ln);padding:6px 14px;border-radius:99px;font-size:13px;font-weight:600}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div id="root"></div><div id="pop"></div><div id="cf"></div><div id="toast"></div>
+<script>
+const P={home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>',pill:'<path d="M10.5 20.5a5 5 0 0 1-7-7l10-10a5 5 0 0 1 7 7z"/><path d="M8.5 8.5l7 7"/>',plus:'<path d="M12 5v14M5 12h14"/>',hist:'<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3 2"/>',gear:'<path d="M4 6h8M16 6h4M4 12h2M10 12h10M4 18h10M18 18h2"/><circle cx="14" cy="6" r="2"/><circle cx="8" cy="12" r="2"/><circle cx="16" cy="18" r="2"/>',bell:'<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10 21h4"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',edit:'<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',check:'<path d="M5 12l5 5 9-10"/>',x:'<path d="M6 6l12 12M18 6L6 18"/>',skip:'<path d="M5 5l9 7-9 7z"/><path d="M19 5v14"/>',alert:'<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18h0"/>',cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>'};
+const ic=(n,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${P[n]}</svg>`;
+const logo=(s=40)=>`<svg width="${s}" height="${s}" viewBox="0 0 64 64" role="img" aria-label="DOSIVYA logo"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4f8bff"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs><rect width="64" height="64" rx="18" fill="url(#lg)"/><g transform="rotate(-40 30 30)"><rect x="9" y="19" width="42" height="22" rx="11" fill="#fff"/><path d="M30 19h10a11 11 0 0 1 0 22H30z" fill="#d6c8ff"/><path d="M15 30h9M19.500 25.500v9" stroke="#4f7cff" stroke-width="3" stroke-linecap="round"/></g><circle cx="46" cy="46" r="13" fill="#fff" stroke="#6d5cf0" stroke-width="3"/><path d="M46 39v7l5 3" stroke="#6d5cf0" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const brand=s=>`<div class="brand" style="margin:0">${logo(s)}<span class="wm">DOSIVYA</span></div>`;
+
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad=n=>String(n).padStart(2,'0');
+const ymd=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const at=(d,t)=>{const[y,m,dd]=d.split('-').map(Number),[h,mi]=t.split(':').map(Number);return new Date(y,m-1,dd,h,mi).getTime()};
+const fmt=t=>{const[h,m]=t.split(':').map(Number);return `${h%12||12}:${pad(m)} ${h<12?'AM':'PM'}`};
+const fd=d=>d?new Date(d+'T00:00').toLocaleDateString(undefined,{day:'numeric',month:'short',year:'numeric'}):'';
+const ft=ms=>new Date(ms).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'});
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const DEF={started:false,meds:[],doses:[],snooze:{},set:{name:'',photo:'',notif:false,sound:true,snooze:10,grace:30}};
+let S;try{S={...DEF,...JSON.parse(localStorage.getItem('dosivya')||'{}')};S.set={...DEF.set,...S.set}}catch(e){S=structuredClone(DEF)}
+const save=()=>{try{localStorage.setItem('dosivya',JSON.stringify(S))}catch(e){toast('Could not save data in this browser.')}};
+let view='dash',ed=null,times=['08:00'],mq='',h={q:'',d:'',s:''},queue=[],alerted={},cfFn=null,ac,lastSig='';
+const TYPES=['Tablet','Capsule','Syrup','Injection','Other'],INS=['Before Food','After Food','With Food'];
+const FR={'Once Daily':['08:00'],'Twice Daily':['08:00','20:00'],'Three Times Daily':['08:00','14:00','20:00'],'Custom':['08:00']};
+const NAV=[['dash','Dashboard','Home','home'],['meds','My Medicines','Meds','pill'],['add','Add Medicine','Add','plus'],['hist','Dose History','History','hist'],['set','Settings','Settings','gear']];
+const DISC='DOSIVYA is a medicine reminder application. It does not provide medical advice, diagnose medical conditions, prescribe medicines, or recommend changes to medication doses. Always follow your healthcare professional’s instructions.';
+let tt;function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(tt);tt=setTimeout(()=>t.style.display='none',2800)}
+function unlock(){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();ac.resume()}catch(e){}}
+function beep(force){if(!S.set.sound&&!force)return;try{unlock();[0,.35,.7].forEach(t=>{const o=ac.createOscillator(),g=ac.createGain(),n=ac.currentTime+t;o.frequency.value=880;o.connect(g);g.connect(ac.destination);g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(.3,n+.03);g.gain.exponentialRampToValueAtTime(.0001,n+.28);o.start(n);o.stop(n+.3)})}catch(e){}}
+const canN=()=>{try{return'Notification'in window}catch(e){return false}};
+const perm=()=>canN()?Notification.permission:'unsupported';
+let swReg=null;
+function notify(title,body,tag){if(!S.set.notif||perm()!=='granted')return;const o={body,tag,icon:'icons/icon-192.png',badge:'icons/icon-192.png'};try{if(swReg)swReg.showNotification(title,o);else new Notification(title,o)}catch(e){try{new Notification(title,o)}catch(e2){}}}
+function askNotif(){if(!canN()){toast('Browser notifications are not supported here.');return}try{Notification.requestPermission().then(p=>{S.set.notif=p==='granted';save();render();toast(p==='granted'?'Notifications enabled':'Permission not granted. In-app reminders still work.')})}catch(e){toast('Notifications are unavailable in this view.')}}
+function sched(date){const o=[];S.meds.forEach(m=>{if(m.start<=date&&date<=m.end)m.times.forEach(t=>{const key=`${m.id}|${date}|${t}`,rec=S.doses.find(d=>d.key===key),ts=at(date,t);if(!rec&&ts<m.created)return;o.push({key,m,date,time:t,ts,rec})})});return o.sort((a,b)=>a.ts-b.ts)}
+const find=k=>sched(k.split('|')[1]).find(x=>x.key===k);
+function resolve(x,status){if(x.rec)return;S.doses.push({key:x.key,medId:x.m.id,name:x.m.name,dosage:x.m.dosage,date:x.date,time:x.time,status,at:Date.now()});delete S.snooze[x.key];if(status==='taken'&&x.m.qty>0)x.m.qty--;save()}
+function tick(){try{const now=Date.now();let ch=false;for(let i=0;i<=7;i++){const d=new Date();d.setDate(d.getDate()-i);sched(ymd(d)).forEach(x=>{if(x.rec||x.ts>now)return;const base=Math.max(x.ts,S.snooze[x.key]||0);if(now>base+S.set.grace*60000){resolve(x,'missed');ch=true}else if(!(S.snooze[x.key]>now)&&!(alerted[x.key]>=base)){alerted[x.key]=now;queue.push(x.key);notify(`Time for ${x.m.name}`,`${x.m.dosage} · ${fmt(x.time)} · ${x.m.instr}`,x.key);beep()}})}
+const sig=sched(ymd(new Date())).map(x=>x.rec?x.rec.status:x.ts<=now?'d':'u').join();if(sig!==lastSig){lastSig=sig;ch=true}
+popup();if(ch)refresh()}catch(e){console.error(e)}}
+const refresh=()=>{if(view!=='add'&&S.started)render()};
+function popup(){const el=$('#pop');queue=[...new Set(queue)].filter(k=>{const x=find(k);return x&&!x.rec&&!(S.snooze[k]>Date.now())});if(!queue.length){el.innerHTML='';el.dataset.s='';return}const sg=queue[0]+queue.length;if(el.dataset.s===sg)return;el.dataset.s=sg;const x=find(queue[0]),k=esc(x.key);
+el.innerHTML=`<div class="ov"><div class="md pp" role="alertdialog" aria-label="Medicine reminder"><div class="bi">${ic('bell',30)}</div><small>Medicine reminder${queue.length>1?` · ${queue.length-1} more waiting`:''}</small><h2 style="margin:0">${esc(x.m.name)}</h2><p class="big">${esc(x.m.dosage)}</p><p>Scheduled for <b>${fmt(x.time)}</b> · ${esc(x.m.instr)}</p><div class="pb"><button class="btn ok" onclick="act('${k}','taken')">${ic('check',18)} TAKEN</button><button class="btn wr" onclick="snz('${k}')">SNOOZE ${S.set.snooze} MIN</button><button class="btn sec" onclick="act('${k}','skipped')">${ic('skip',18)} SKIP</button></div><small>TAKEN logs that you marked this dose. It can’t confirm the medicine was swallowed.</small></div></div>`}
+function act(k,st){const x=find(k);if(x&&!x.rec){resolve(x,st);toast(st==='taken'?'Dose recorded as taken':'Dose skipped')}popup();refresh()}
+function snz(k){S.snooze[k]=Date.now()+S.set.snooze*60000;save();popup();toast(`Snoozed for ${S.set.snooze} minutes`)}
+function cf(msg,fn,label='Delete'){cfFn=fn;$('#cf').innerHTML=`<div class="ov"><div class="md"><h3 style="margin-bottom:8px">Are you sure?</h3><p class="mu" style="margin-bottom:18px">${esc(msg)}</p><div class="ac" style="justify-content:flex-end"><button class="btn sec" onclick="cfNo()">Cancel</button><button class="btn er" onclick="cfYes()">${label}</button></div></div></div>`}
+const cfNo=()=>{$('#cf').innerHTML='';cfFn=null};const cfYes=()=>{const f=cfFn;cfNo();f&&f()};
+function go(v){view=v;if(v==='add'&&!ed)times=['08:00'];if(v!=='add')ed=null;render();scrollTo(0,0)}
+function goAdd(id){ed=id;const m=S.meds.find(x=>x.id===id);times=m?[...m.times]:['08:00'];view='add';render();scrollTo(0,0)}
+const empty=(i,t,x,b='')=>`<div class="empty"><div class="si">${ic(i,26)}</div><h3>${t}</h3><p>${x}</p>${b}</div>`;
+const pill=(s)=>({taken:['taken','check','Taken'],skipped:['skipped','skip','Skipped'],missed:['missed','x','Missed'],due:['due','bell','Due now'],up:['up','clock','Upcoming']}[s]);
+const pl=s=>{const p=pill(s);return`<span class="pill ${p[0]}">${ic(p[1],13)} ${p[2]}</span>`};
+const av=()=>S.set.photo?`<img src="${S.set.photo}" alt="Profile">`:S.set.name?esc(S.set.name[0].toUpperCase()):ic('user',20);
+const cd=ts=>{const d=ts-Date.now();if(d<=0)return'Due now';const hh=Math.floor(d/3.6e6),m=Math.floor(d%3.6e6/6e4),s=Math.floor(d%6e4/1e3);return`in ${hh?hh+'h ':''}${pad(m)}m ${pad(s)}s`};
+const stock=(m,pre)=>`<div class="sq"><input type="number" min="0" id="${pre}${m.id}" value="${m.qty}" aria-label="Quantity for ${esc(m.name)}"><button class="btn sec sm" onclick="setQty('${m.id}','${pre}')">Update</button></div>`;
+function setQty(id,pre){const v=$('#'+pre+id).value,m=S.meds.find(x=>x.id===id);if(v===''||+v<0||!Number.isInteger(+v)){toast('Enter a whole number, 0 or more.');return}m.qty=+v;save();toast('Stock updated');render()}
+function dash(){const now=Date.now(),L=sched(ymd(new Date())),c=s=>L.filter(x=>x.rec&&x.rec.status===s).length,pend=L.filter(x=>!x.rec).length,nx=L.find(x=>!x.rec),low=S.meds.filter(m=>m.qty<=m.min);
+const stat=(l,v,i,cl)=>`<div class="card st"><div class="si ${cl}">${ic(i)}</div><b>${v}</b><small>${l}</small></div>`;
+return `<h1>Welcome to DOSIVYA</h1><p class="mu">${S.set.name?`Hello, ${esc(S.set.name)}. `:''}Here’s your medicine plan for today.</p>
+${perm()==='default'?`<div class="ban">${ic('bell',22)}<p>Allow notifications so DOSIVYA can alert you when a dose is due, even if this tab is in the background. You can turn them off anytime in Settings.</p><button class="btn sm" onclick="askNotif()">Enable notifications</button></div>`:''}
+<div class="stats">${stat('Total medicines',S.meds.length,'pill','')}${stat('Today’s doses',L.length,'cal','p')}${stat('Medicines taken',c('taken'),'check','ok')}${stat('Pending doses',pend,'clock','wr')}${stat('Missed doses',c('missed'),'x','er')}</div>
+${nx?`<div class="card nx"><div><small>Next medicine reminder</small><h2>${esc(nx.m.name)}</h2><p>${esc(nx.m.dosage)} · ${fmt(nx.time)} · ${esc(nx.m.instr)}</p></div><div class="cd" id="cd" data-ts="${nx.ts}">${cd(nx.ts)}</div></div>`:`<div class="card" style="margin-bottom:22px">${empty('check',S.meds.length?'All done for today':'No medicines yet',S.meds.length?'No more doses are scheduled for today.':'Add your first medicine to start getting reminders.',S.meds.length?'':`<button class="btn" style="margin-top:12px" onclick="go('add')">${ic('plus',18)} Add medicine</button>`)}</div>`}
+${low.length?`<div class="card sec"><h3>${ic('alert',18)} Refill reminders</h3>${low.map(m=>`<div class="row"><div class="g"><b>${esc(m.name)}</b><br><small>${m.qty} left · refill at ${m.min}</small></div>${stock(m,'d-')}</div>`).join('')}</div>`:''}
+<div class="card sec"><h3>Today’s schedule</h3>${L.length?L.map(x=>{const s=x.rec?x.rec.status:x.ts<=now?'due':'up',k=esc(x.key);return`<div class="row"><div class="si ${x.rec?'':'p'}">${ic('pill')}</div><div class="g"><b>${esc(x.m.name)}</b> <small>${esc(x.m.dosage)}</small><br><small>${fmt(x.time)} · ${esc(x.m.instr)}</small></div>${pl(s)}${x.rec?'':`<div class="ac"><button class="btn ok sm" onclick="act('${k}','taken')">Taken</button><button class="btn sec sm" onclick="act('${k}','skipped')">Skip</button></div>`}</div>`}).join(''):empty('cal','Nothing scheduled today','Medicines whose dates include today will appear here.')}</div>`}
+function medCards(){const q=mq.toLowerCase(),L=S.meds.filter(m=>m.name.toLowerCase().includes(q));if(!L.length)return`<div class="card">${empty('pill',S.meds.length?'No matching medicines':'No medicines yet',S.meds.length?'Try a different name.':'Add a medicine to see it here.')}</div>`;
+return`<div class="grid">${L.map(m=>`<div class="card"><div class="mh"><div class="si p">${ic('pill')}</div><div><h3>${esc(m.name)}</h3><small>${esc(m.dosage)} · ${esc(m.type)}</small></div></div><dl><dt>Frequency</dt><dd>${esc(m.freq)}</dd><dt>Reminders</dt><dd>${m.times.map(fmt).join(', ')}</dd><dt>Start</dt><dd>${fd(m.start)}</dd><dt>End</dt><dd>${fd(m.end)}</dd><dt>Instructions</dt><dd>${esc(m.instr)}</dd><dt>Available</dt><dd><span class="chip ${m.qty<=m.min?'low':''}">${m.qty} left${m.qty<=m.min?' · low':''}</span></dd></dl>${m.notes?`<p class="mu" style="margin-bottom:10px">${esc(m.notes)}</p>`:''}${stock(m,'m-')}<div class="ac" style="margin-top:12px"><button class="btn sec sm" onclick="goAdd('${m.id}')">${ic('edit',15)} Edit</button><button class="btn er sm" onclick="delMed('${m.id}')">${ic('trash',15)} Delete</button></div></div>`).join('')}</div>`}
+function delMed(id){const m=S.meds.find(x=>x.id===id);cf(`Delete ${m.name}? Its reminders will stop. Past dose history is kept.`,()=>{S.meds=S.meds.filter(x=>x.id!==id);save();toast('Medicine deleted');render()})}
+const meds=()=>`<div class="ac" style="justify-content:space-between;margin-bottom:14px"><h2 style="margin:0">My Medicines</h2><button class="btn" onclick="go('add')">${ic('plus',18)} Add medicine</button></div><input type="search" placeholder="Search medicines by name" value="${esc(mq)}" oninput="mq=this.value;$('#mres').innerHTML=medCards()" style="margin-bottom:14px" aria-label="Search medicines"><div id="mres">${medCards()}</div>`;
+const sel=(a,v)=>a.map(o=>`<option ${o===v?'selected':''}>${o}</option>`).join('');
+function addv(){const m=ed?S.meds.find(x=>x.id===ed):{},v=(k,d='')=>esc(m[k]??d),td=ymd(new Date());
+return`<h2>${ed?'Edit medicine':'Add medicine'}</h2><div class="card"><ul class="err" id="err"></ul><div class="fg">
+<label class="f">Medicine name *<input id="f-name" value="${v('name')}" placeholder="e.g. Metformin"></label>
+<label class="f">Dosage *<input id="f-dose" value="${v('dosage')}" placeholder="e.g. 1 tablet, 5 ml"></label>
+<label class="f">Medicine type<select id="f-type">${sel(TYPES,m.type)}</select></label>
+<label class="f">Instructions<select id="f-instr">${sel(INS,m.instr||'After Food')}</select></label>
+<label class="f">Start date *<input type="date" id="f-start" value="${v('start',td)}"></label>
+<label class="f">End date *<input type="date" id="f-end" value="${v('end')}"></label>
+<label class="f">Frequency<select id="f-freq" onchange="fq()">${sel(Object.keys(FR),m.freq)}</select></label>
+<div class="f"><span style="font-weight:600;font-size:14px">Reminder times *</span><div id="tm"></div></div>
+<label class="f">Available quantity *<input type="number" min="0" id="f-qty" value="${v('qty',30)}"></label>
+<label class="f">Minimum stock quantity *<input type="number" min="0" id="f-min" value="${v('min',5)}"></label></div>
+<label class="f" style="margin-top:14px">Additional notes<textarea id="f-notes" rows="3">${v('notes')}</textarea></label>
+<p class="mu" style="margin-top:12px">Stock goes down by one only when you mark a dose as Taken. You can correct it anytime.</p>
+<div class="ac" style="margin-top:16px"><button class="btn" onclick="saveMed()">Save medicine</button><button class="btn sec" onclick="go('meds')">Cancel</button></div></div>`}
+function drawTimes(){const f=$('#f-freq').value;$('#tm').innerHTML=times.map((t,i)=>`<div class="tr"><input type="time" value="${t}" onchange="times[${i}]=this.value" aria-label="Reminder time ${i+1}">${f==='Custom'&&times.length>1?`<button class="ib" onclick="times.splice(${i},1);drawTimes()" aria-label="Remove time">${ic('x',16)}</button>`:''}</div>`).join('')+(f==='Custom'?`<button class="btn sec sm" onclick="times.push('12:00');drawTimes()">${ic('plus',15)} Add time</button>`:'')}
+function fq(){const f=$('#f-freq').value;if(f!=='Custom')times=[...FR[f]];drawTimes()}
+function saveMed(){const g=i=>$('#f-'+i).value.trim(),e=[],name=g('name'),dose=g('dose'),start=g('start'),end=g('end'),qty=g('qty'),min=g('min');
+if(!name)e.push('Enter the medicine name.');if(!dose)e.push('Enter the dosage.');if(!start)e.push('Choose a start date.');if(!end)e.push('Choose an end date.');if(start&&end&&end<start)e.push('The end date can’t be before the start date.');
+if(times.some(t=>!t))e.push('Fill in every reminder time.');if(new Set(times).size!==times.length)e.push('Each reminder time must be different.');
+if(qty===''||+qty<0||!Number.isInteger(+qty))e.push('Available quantity must be a whole number, 0 or more.');if(min===''||+min<0||!Number.isInteger(+min))e.push('Minimum stock must be a whole number, 0 or more.');
+if(e.length){const x=$('#err');x.innerHTML=e.map(t=>`<li>${esc(t)}</li>`).join('');x.style.display='block';x.scrollIntoView({block:'center'});return}
+const data={name,dosage:dose,type:g('type'),start,end,freq:g('freq'),times:[...times].sort(),instr:g('instr'),qty:+qty,min:+min,notes:g('notes')};
+if(ed)Object.assign(S.meds.find(x=>x.id===ed),data,{created:new Date().setSeconds(0,0)});else S.meds.push({id:uid(),created:new Date().setSeconds(0,0),...data});
+const wasEd=ed;ed=null;save();toast(wasEd?'Medicine updated':'Medicine saved');lastSig='';go('meds');tick()}
+function histRows(){const L=S.doses.filter(d=>d.name.toLowerCase().includes(h.q.toLowerCase())&&(!h.d||d.date===h.d)&&(!h.s||d.status===h.s)).sort((a,b)=>b.date.localeCompare(a.date)||b.time.localeCompare(a.time));
+if(!L.length)return empty('hist',S.doses.length?'No records match':'No dose history yet','Taken, skipped and missed doses will be listed here.');
+return`<div class="tw"><table><thead><tr><th>Date</th><th>Medicine</th><th>Dosage</th><th>Scheduled</th><th>Action time</th><th>Status</th></tr></thead><tbody>${L.map(d=>`<tr><td>${fd(d.date)}</td><td><b>${esc(d.name)}</b></td><td>${esc(d.dosage)}</td><td>${fmt(d.time)}</td><td>${ft(d.at)}</td><td>${pl(d.status)}</td></tr>`).join('')}</tbody></table></div>`}
+function hf(){h={q:$('#h-q').value,d:$('#h-d').value,s:$('#h-s').value};$('#hres').innerHTML=histRows()}
+const hist=()=>`<div class="ac" style="justify-content:space-between;margin-bottom:14px"><h2 style="margin:0">Dose History</h2><button class="btn er sm" onclick="cf('Clear all dose history? This can’t be undone.',()=>{S.doses=[];save();toast('History cleared');render()},'Clear history')">${ic('trash',15)} Clear history</button></div><div class="card"><div class="flt"><input id="h-q" type="search" placeholder="Search medicine" value="${esc(h.q)}" oninput="hf()" aria-label="Search by medicine"><input id="h-d" type="date" value="${h.d}" onchange="hf()" aria-label="Filter by date"><select id="h-s" onchange="hf()" aria-label="Filter by status"><option value="">All statuses</option>${['taken','skipped','missed'].map(s=>`<option value="${s}" ${h.s===s?'selected':''}>${s[0].toUpperCase()+s.slice(1)}</option>`).join('')}</select></div><div id="hres">${histRows()}</div></div>`;
+const sw=(c,fn)=>`<label class="sw"><input type="checkbox" ${c?'checked':''} onchange="${fn}"><i></i></label>`;
+function setNotif(on){if(on){if(!canN()){toast('Browser notifications are not supported here.')}else if(perm()==='granted')S.set.notif=true;else if(perm()==='denied'){toast('Notifications are blocked. Allow them in your browser’s site settings.');S.set.notif=false}else{askNotif();return}}else S.set.notif=false;save();render()}
+function numSet(k,id,lo,hi){const v=+$('#'+id).value;if(!Number.isInteger(v)||v<lo||v>hi){toast(`Enter a number from ${lo} to ${hi}.`);render();return}S.set[k]=v;save();toast('Saved')}
+function photo(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas');c.width=c.height=128;const s=Math.min(im.width,im.height);c.getContext('2d').drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,128,128);S.set.photo=c.toDataURL('image/jpeg',.8);save();render()};im.src=r.result};r.readAsDataURL(f)}
+const setv=()=>`<h2>Settings</h2>
+<div class="card sec"><h3>Notifications</h3><p class="mu" style="margin-bottom:6px">Browser status: <b>${perm()==='default'?'not asked yet':perm()}</b>. Permission lets DOSIVYA alert you when a dose is due, even if this tab is in the background.</p><div class="sr"><span>Browser notifications</span>${sw(S.set.notif&&perm()==='granted','setNotif(this.checked)')}</div><div class="sr"><span>Alarm sound</span>${sw(S.set.sound,'S.set.sound=this.checked;save()')}</div><div class="ac" style="margin-top:8px"><button class="btn sec sm" onclick="beep(true)">Test sound</button><button class="btn sec sm" onclick="notify('DOSIVYA test','Notifications are working.','t');beep();toast('Test alert sent')">Send test alert</button></div></div>
+<div class="card sec"><h3>Reminders</h3><div class="sr"><span>Snooze duration (minutes)</span><input class="nm" type="number" id="sn" value="${S.set.snooze}" min="1" max="120" onchange="numSet('snooze','sn',1,120)"></div><div class="sr"><span>Mark as missed after (minutes)</span><input class="nm" type="number" id="gr" value="${S.set.grace}" min="1" max="720" onchange="numSet('grace','gr',1,720)"></div></div>
+<div class="card sec"><h3>Profile</h3><div class="ac"><div class="av" style="width:64px;height:64px;font-size:24px">${av()}</div><div style="flex:1;min-width:180px"><input id="pn" placeholder="Your name" value="${esc(S.set.name)}" onchange="S.set.name=this.value.trim();save();toast('Saved');render()" aria-label="Your name"></div></div><div class="ac" style="margin-top:12px"><label class="btn sec sm" style="cursor:pointer">Upload photo<input type="file" accept="image/*" hidden onchange="photo(this)"></label>${S.set.photo?`<button class="btn sec sm" onclick="S.set.photo='';save();render()">Remove photo</button>`:''}</div></div>
+<div class="card sec"><h3>How reminders work</h3><p class="mu">DOSIVYA checks your schedule every few seconds while it’s open in a browser tab or an installed app that’s still running. Browsers can pause background tabs, and nothing can ring if the device is off, in battery-saver mode, or the system blocks background activity. Don’t rely on DOSIVYA as your only safeguard for critical medicines. Alarms that fire when the app is fully closed need a native Android app using exact alarms, or a backend sending push notifications.</p><p class="mu" style="margin-top:8px">To install: use your browser’s “Install app” or “Add to Home Screen” option where available.</p></div>
+<div class="card sec"><h3>Data</h3><p class="mu" style="margin-bottom:10px">Everything is stored only in this browser.</p><button class="btn er sm" onclick="cf('Clear all medicines, history and settings? This can’t be undone.',()=>{try{localStorage.removeItem('dosivya')}catch(e){}S=structuredClone(DEF);queue=[];view='dash';popup();render();toast('Data cleared')},'Clear data')">Clear application data</button></div>`;
+function welcome(){return`<div class="wel">${logo(96)}<h1 class="wm">DOSIVYA</h1><p class="tag">Never Miss Your Medicine.</p><p class="d">Set up your medicines once and get clear reminders when each dose is due. Mark doses as taken, snooze or skip them, and keep a simple history with refill alerts.</p><div class="fts"><span>Smart reminders</span><span>Dose history</span><span>Refill alerts</span></div><button class="btn" onclick="S.started=true;save();unlock();render();tick()">Get started</button><p class="ft" style="max-width:520px">${DISC}</p></div>`}
+function render(){const r=$('#root');if(!S.started){r.innerHTML=welcome();return}
+const V={dash,meds,add:addv,hist,set:setv}[view]();
+r.innerHTML=`<div class="shell"><aside>${brand(40)}<div style="height:10px"></div>${NAV.map(n=>`<button class="nv ${view===n[0]?'on':''}" onclick="${n[0]==='add'?'ed=null;':''}go('${n[0]}')">${ic(n[3])}${n[1]}</button>`).join('')}<div style="flex:1"></div><small>Never Miss Your Medicine.</small></aside>
+<div class="mn"><header class="tb"><div class="ml">${logo(38)}</div><div class="dt">${new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long',year:'numeric'})}</div><button class="ib" onclick="bell()" aria-label="Notifications">${ic('bell',20)}${dueCount()?'<span class="dot"></span>':''}</button><button class="av" onclick="go('set')" aria-label="Profile">${av()}</button></header>
+<main>${V}<p class="ft">${DISC}</p></main></div>
+<nav class="bn">${NAV.map(n=>`<button class="${view===n[0]?'on':''}" onclick="${n[0]==='add'?'ed=null;':''}go('${n[0]}')">${ic(n[3],22)}${n[2]}</button>`).join('')}</nav></div>`;
+if(view==='add')drawTimes()}
+const dueCount=()=>sched(ymd(new Date())).filter(x=>!x.rec&&x.ts<=Date.now()).length+S.meds.filter(m=>m.qty<=m.min).length;
+function bell(){if(perm()==='default'){askNotif();return}const d=sched(ymd(new Date())).filter(x=>!x.rec&&x.ts<=Date.now()).length,l=S.meds.filter(m=>m.qty<=m.min).length;toast(d||l?`${d} dose${d===1?'':'s'} due · ${l} low-stock medicine${l===1?'':'s'}`:'You’re all caught up')}
+setInterval(()=>{if(S.started){const e=$('#cd');if(e)e.textContent=cd(+e.dataset.ts)}},1000);
+setInterval(()=>{if(S.started)tick()},5000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&S.started)tick()});
+render();if(S.started)tick();
+if('serviceWorker'in navigator&&location.protocol==='https:'||location.hostname==='localhost'){window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').then(r=>{swReg=r}).catch(()=>{}))}
+</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "dosivya",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DOSIVYA – Never Miss Your Medicine. A static medicine reminder PWA.",
+  "scripts": {
+    "start": "npx --yes serve public -l 3000",
+    "check": "node scripts/check.mjs"
+  },
+  "engines": { "node": ">=18" }
+}
